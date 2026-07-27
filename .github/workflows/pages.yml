@@ -23,11 +23,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: cachix/install-nix-action@v31.11.0
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
 
-      - name: Cache Nix store
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
+      # No binary cache: the build is ~75s straight from cache.nixos.org.
       - name: Build site
         run: nix build .#site --print-build-logs
 

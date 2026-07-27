@@ -1,0 +1,52 @@
+base_url = "https://art.jacobson.me"
+title = "Art Jacobson"
+description = "Art Jacobson — principal software architect. Home automation, voice AI, and declarative infrastructure. Minnesota."
+
+compile_sass = true
+build_search_index = false
+generate_feeds = false
+
+minify_html = true
+
+[markdown]
+smart_punctuation = true
+
+[extra]
+# Everything the page renders lives here, so the content is data rather than
+# markup. Add a link and it appears; remove one and it's gone.
+tagline = "Home automation, voice AI, and declarative infrastructure."
+
+# Images live in static/ and are copied verbatim into the build.
+avatar = "avatar.jpg"
+avatar_alt = "Art Jacobson"
+banner = "banner.jpg"
+banner_alt = "A person and a dog standing on ice floes on the ocean at sunset."
+
+# Right-aligned mono block in the header. One line each.
+meta_lines = ["Twin Cities", "Minnesota"]
+
+focus = [
+  "Home automation platforms, embedded to cloud",
+  "LLM agents, MCP, and voice interfaces",
+  "Rust, Go, macOS, and GNUstep",
+  "Kubernetes, Flux GitOps, and self-hosted infrastructure",
+]
+
+# icon must be one of: github, linkedin (see templates/index.html)
+[[extra.links]]
+name = "GitHub"
+url = "https://github.com/ajacobson"
+handle = "@ajacobson"
+icon = "github"
+
+[[extra.links]]
+name = "LinkedIn"
+url = "https://www.linkedin.com/in/artjacobson/"
+handle = "/in/artjacobson"
+icon = "linkedin"
+
+[[extra.links]]
+name = "Patents"
+url = "https://patents.justia.com/inventor/arthur-a-jacobson"
+handle = "25 granted"
+icon = "patent"

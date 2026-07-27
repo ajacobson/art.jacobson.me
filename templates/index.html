@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{{ config.title }}</title>
+    <meta name="description" content="{{ config.description }}" />
+    <meta name="author" content="{{ config.title }}" />
+    <link rel="canonical" href="{{ config.base_url }}" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ config.title }}" />
+    <meta property="og:description" content="{{ config.description }}" />
+    <meta property="og:url" content="{{ config.base_url }}" />
+    {%- if config.extra.banner %}
+    <meta property="og:image" content="{{ get_url(path=config.extra.banner, trailing_slash=false) }}" />
+    <meta property="og:image:alt" content="{{ config.extra.banner_alt }}" />
+    {%- endif %}
+
+    <link rel="stylesheet" href="{{ get_url(path='main.css', trailing_slash=false) }}" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2214%22>❄</text></svg>"
+    />
+  </head>
+
+  <body>
+    {%- if config.extra.banner %}
+    <div class="banner">
+      <img
+        src="{{ get_url(path=config.extra.banner, trailing_slash=false) }}"
+        alt="{{ config.extra.banner_alt }}"
+        width="1500"
+        height="500"
+        fetchpriority="high"
+      />
+    </div>
+    {%- endif %}
+
+    <div class="page">
+      <header>
+        <div class="head">
+          <div class="identity">
+            {%- if config.extra.avatar %}
+            <img
+              class="avatar"
+              src="{{ get_url(path=config.extra.avatar, trailing_slash=false) }}"
+              alt="{{ config.extra.avatar_alt }}"
+              width="256"
+              height="256"
+            />
+            {%- endif %}
+            <h1>{{ config.title }}<span class="dot">.</span></h1>
+          </div>
+          {%- if config.extra.meta_lines %}
+          <p class="meta">
+            {%- for line in config.extra.meta_lines %}{{ line }}{% if not loop.last %}<br />{% endif %}{% endfor -%}
+          </p>
+          {%- endif %}
+        </div>
+        {%- if config.extra.tagline %}
+        <p class="role">{{ config.extra.tagline }}</p>
+        {%- endif %}
+      </header>
+
+      {%- set section = get_section(path="_index.md") %}
+      {%- if section.content %}
+      <div class="prose">{{ section.content | safe }}</div>
+      {%- endif %}
+
+      {%- if config.extra.focus %}
+      <section aria-labelledby="focus-heading">
+        <div class="label"><h2 id="focus-heading">Focus</h2></div>
+        <div class="rows">
+          {%- for item in config.extra.focus %}
+          <div class="row"><span class="val">{{ item }}</span></div>
+          {%- endfor %}
+        </div>
+      </section>
+      {%- endif %}
+
+      {%- if config.extra.links %}
+      <section aria-labelledby="links-heading">
+        <div class="label"><h2 id="links-heading">Elsewhere</h2></div>
+        <div class="links">
+          {%- for link in config.extra.links %}
+          <a class="link" href="{{ link.url }}" rel="me noopener">
+            <span class="icon">
+              {%- if link.icon == "github" -%}
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+              {%- elif link.icon == "linkedin" -%}
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
+              {%- elif link.icon == "patent" -%}
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 0a9.4 9.4 0 1 0 0 18.8A9.4 9.4 0 0 0 12 0zm0 3.6a5.8 5.8 0 1 1 0 11.6 5.8 5.8 0 0 1 0-11.6z" /><path d="M6.4 19.3 3 24l9-3.4 9 3.4-3.4-4.7a11.9 11.9 0 0 1-11.2 0z" /></svg>
+              {%- endif -%}
+            </span>
+            <span class="k">{{ link.name }}</span>
+            <span class="v">{{ link.handle }}</span>
+          </a>
+          {%- endfor %}
+        </div>
+      </section>
+      {%- endif %}
+
+      <footer>Built with Zola and Nix</footer>
+    </div>
+  </body>
+</html>

@@ -1,8 +1,10 @@
 name: Deploy site
 
+# Pull requests run the build as validation; only pushes to main deploy.
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 # Allow the deploy-pages action to publish, and nothing more.
@@ -11,9 +13,10 @@ permissions:
   pages: write
   id-token: write
 
-# Never let two deploys race; let an in-flight one finish.
+# Never let two deploys race; let an in-flight one finish. Per-ref
+# grouping keeps PR validation from queueing behind a main deploy.
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -35,16 +38,20 @@ jobs:
       # The store path is read-only, which upload-pages-artifact cannot tar.
       # Dereference the symlink and drop the store's permission bits.
       - name: Stage artifact
+        if: github.event_name != 'pull_request'
         run: cp -rL --no-preserve=mode,ownership result public
 
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
 
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: public
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -21,6 +21,7 @@
       perSystem = {
         config,
         pkgs,
+        lib,
         ...
       }: {
         packages = {
@@ -29,25 +30,33 @@
           site = pkgs.stdenvNoCC.mkDerivation {
             pname = "art-jacobson-me";
             version = "0.1.0";
-            src = ./.;
+
+            # Only what Zola reads; edits to the README, CI workflow, or
+            # flake itself don't invalidate the build.
+            src = lib.fileset.toSource {
+              root = ./.;
+              fileset = lib.fileset.unions [
+                ./config.toml
+                ./content
+                ./sass
+                ./static
+                ./templates
+              ];
+            };
 
             nativeBuildInputs = [pkgs.zola];
 
-            # Zola resolves paths relative to the config, and writes nothing
-            # outside the output directory.
-            buildPhase = ''
-              runHook preBuild
-              zola build --output-dir "$NIX_BUILD_TOP/public"
-              runHook postBuild
-            '';
+            dontBuild = true;
 
             installPhase = ''
               runHook preInstall
-              cp -r "$NIX_BUILD_TOP/public" "$out"
+              zola build --output-dir "$out"
               runHook postInstall
             '';
           };
         };
+
+        checks.site = config.packages.site;
 
         devShells.default = pkgs.mkShellNoCC {
           packages = [pkgs.zola pkgs.alejandra];

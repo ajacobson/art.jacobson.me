@@ -2,7 +2,7 @@
 title = "Art Jacobson"
 +++
 
-I'm a principal software architect at [Savant Systems](https://www.savant.com)
+I'm a principal software architect at [Savant](https://www.savant.com)
 and a member of its founding team. Twenty years of home automation platforms
 since then — embedded, mobile, and cloud.
 

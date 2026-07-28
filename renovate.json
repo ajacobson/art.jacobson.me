@@ -6,8 +6,16 @@
   },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 6am on monday"]
+    "schedule": ["before 6am on monday"],
+    "automerge": true
   },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["digest", "patch", "minor"],
+      "minimumReleaseAge": "7 days",
+      "automerge": true
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",

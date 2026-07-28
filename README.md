@@ -24,7 +24,6 @@ nix build        # -> ./result, byte-identical to what CI publishes
 | `content/_index.md` | The prose on the landing page |
 | `templates/index.html` | The only template |
 | `sass/main.scss` | Styles; Base16 colors mirroring `nix-config`'s Dracula palette |
-| `static/CNAME` | Custom domain, copied verbatim into the build output |
 | `static/banner.jpg` | Full-bleed header image, also used as the `og:image` |
 | `static/avatar.jpg` | Profile image straddling the banner's lower edge |
 
@@ -45,7 +44,8 @@ matching branch there too — otherwise the link renders without a mark.
 
 Pushing to `main` triggers `.github/workflows/pages.yml`, which builds with Nix
 and publishes via GitHub Pages. Pages must be set to **build from GitHub
-Actions** rather than from a branch.
+Actions** rather than from a branch. The custom domain (`art.jacobson.me`)
+lives in the repo's Pages settings, not in the tree.
 
 ## Colors
 
